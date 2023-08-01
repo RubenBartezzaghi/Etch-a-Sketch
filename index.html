@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            flex-direction: column;
+        }
+        input {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 15px;
+            font-weight: lighter;
+            text-align: center;
+            height: 30px;
+            width: 100px;
+            color: rgb(53, 53, 53);
+            border: none;
+            border-color: rgb(165, 165, 165);
+            outline-style: none;
+            
+            
+        }
+        
+      
+        input:focus {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 15px;
+            font-weight: lighter;
+            text-align: center;
+            height: 30px;
+            width: 100px;            
+            color: rgb(53,53,53);
+            box-shadow: 0px 2px 5px 1px rgb(175, 175, 175);
+            background-color: rgb(255, 255, 255);            
+            border-radius: 5px;         
+            
+            
+            
+        }
+        #grid{
+            display: flex;
+            flex-direction: column;
+            height: 80vh ;
+            width: 80vh ;
+            background-color: rgb(204, 204, 204);
+            
+            border-style: solid;
+            border: 1px;
+            border-color: black;
+            justify-content: space-evenly;
+            padding: 1px;
+            border-radius: 1%;
+        }
+        .row{
+            display: flex;
+            
+            
+            flex: 1;
+            justify-content: space-evenly;
+            
+        }
+        .square{
+            background-color: rgb(53, 53, 53);
+            display: flex;
+            flex: 1;
+            margin: 1px;
+            opacity: 1;
+            
+            
+        }
+        #buttonContainer{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            align-self: flex-end;
+        }
+        #newGridButton{
+            color: rgb(53,53,53);
+            box-shadow: 0px 2px 5px 1px rgb(175, 175, 175);
+            background-color: rgb(255, 255, 255);
+            padding: 0.5em 1em;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            margin-top: 20px;
+            margin-right: 0;
+            font-size: 16px;
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            justify-content: center;
+            width: 40px ;
+            
+            
+            
+        }
+        label{
+            margin-bottom: 20px;
+            font-size: 12px;
+        }
+        #inputField{
+            display: flex;
+            width: 100vw;
+            justify-content: center;
+
+            
+        }
+        #inputContainer {
+            width:80vw;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            height: 30vh;
+            
+        }
+        #opacityContainer {
+            width:80vw;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            height: 30vh;
+            
+        }
+        #colorInputContainer{
+            width:80vw;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            height: 30vh;
+        }
+        #randomizerContainer{
+            width:80vw;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            height: 30vh;
+        }
+        #squareInput, #colorInput, #opacityInput {
+            color: rgb(53,53,53);
+            box-shadow: 0px 2px 5px 1px rgb(175, 175, 175);
+            background-color: rgb(255, 255, 255);
+            min-height: 50px;
+            
+            border-radius: 5px;
+            margin-bottom: 20px;
+            margin-top: 20px;
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;          
+        }
+        #randomizerInput {
+            color: rgb(53,53,53);
+            box-shadow: 0px 2px 5px 1px rgb(175, 175, 175);
+            background-color: rgb(255, 255, 255);
+            width: 20px;
+            height: 20px;
+            margin-bottom: 10px;
+            margin-top: 30px;
+            display: flex;
+
+        }
+        label{
+            text-align: center;
+            justify-content: flex-end;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="inputField">
+        <div id="inputContainer">
+            <input id = "squareInput" type="number" name="squareNumber" 
+            required min="1" max="100">
+            <label for="squareNumber">Select the number of squares you want</label>
+            
+        </div>    
+        <div id="colorInputContainer">
+            <input id = "colorInput" type="color" name="rgbNumber">
+            <label for="rgbNumber">Select the color for your grid</label>
+        </div>
+        <div id="opacityContainer">
+            <input id = "opacityInput" type="number" name="opacityNumber" required min = 0 max = 3 >
+            <label for="opacityNumber">Select how fast the squares will erase</label>
+        </div>
+        <div id="randomizerContainer">
+            <input type="checkbox" id="randomizerInput" name="random" value="checked"/>
+            <label for="randomizerInput">Color randomization</label>            
+        </div>    
+        <div id="buttonContainer">    
+            <div id="newGridButton">CLICK</div>
+            <label for="newGridButton">Click to create a customized grid</label>
+        </div>
+        
+
+    </div>
+    <div id="grid"></div>
+    <script>
+        function vh(percent) {
+            var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+            return (percent * h) / 100;
+        }
+        function vw(percent) {
+            var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+            return (percent * w) / 100;
+        }
+        function reduceOpacity() {
+            this.style.opacity = this.style.opacity * 0,9;
+        }
+        function toColor(num) {
+            num >>>= 0;
+            var b = num & 0xFF,
+                g = (num & 0xFF00) >>> 8,
+                r = (num & 0xFF0000) >>> 16,
+                a = ( (num & 0xFF000000) >>> 24 ) / 255 ;
+            return "rgba(" + [r, g, b, a].join(",") + ")";
+        }
+        function randomIntFromInterval(min, max) { // min and max included 
+            return Math.floor(Math.random() * (max - min + 1) + min)
+        }
+        function randomizeColor() {
+            let max = parseInt("FFFFFFFF", 16);
+            
+            let newColor = randomIntFromInterval(0,max);
+            
+            return toColor(newColor)
+        }
+        function createGrid(squareNumber,color) {
+            let rows = document.querySelectorAll(".row")
+            rows.forEach(row => {
+                row.remove();
+            })
+            document.getElementById("grid").style.backgroundColor = color*0.8 
+            
+            document.getElementById("grid").style.height = vh(80) + (vh(0.25)*(squareNumber+1))     ///The initial grid has to contain the rows but with a small margin
+            document.getElementById("grid").style.width = vh(80) + (vh(0.25)*(squareNumber+1)) 
+            let size = vh(80);
+            
+            ///create n rows with
+            for (i=0; i<squareNumber; i++) {
+            let row = document.createElement("div")
+            row.classList.add("row");
+            document.getElementById("grid").appendChild(row);
+            
+            //document.getElementsByClassName("row")[i].style.height = sizeHeight/squareNumber + "px";
+            //document.getElementsByClassName("row")[i].style.width = sizeHeight + "px";
+            //console.log(document.getElementsByClassName("row")[i].style.height);
+
+            
+                ///create n element inside each row
+                for (j=0; j<squareNumber; j++) {
+                    let square = document.createElement("div")
+                    square.classList.add("square") 
+                    square.style.backgroundColor = color 
+                    document.getElementsByClassName("row")[i].appendChild(square)
+                    square.style.opacity = 1;
+                    square.addEventListener("mouseover", event => {
+                        let selectedOpacity = document.getElementById("opacityInput").value
+                        let randomnessChecked = document.getElementById("randomizerInput").checked
+                        if (randomnessChecked == true) {
+                            square.style.backgroundColor = randomizeColor()
+                        }
+                        else {}
+
+                        if (document.getElementById("opacityInput").value) {
+                            square.style.opacity = (square.style.opacity-0)-(selectedOpacity)*0.1;
+                        }
+                        else {
+                            square.style.opacity= (square.style.opacity-0)- 0.1;
+                        }
+                        
+                    }, )
+                    
+                    //document.getElementsByClassName("row")[i].getElementsByClassName("square")[j].style.height =  size/squareNumber + "px";
+                    //document.getElementsByClassName("row")[i].getElementsByClassName("square")[j].style.width = size/squareNumber + "px";
+
+                }
+            }
+            if (squareNumber < 51) {
+                let squares = document.querySelectorAll(".square")
+                squares.forEach(square =>{
+                square.style.margin = "1px";
+                })
+            }
+            if (squareNumber > 50) {
+                let squares = document.querySelectorAll(".square")
+                squares.forEach(square =>{
+                square.style.margin = "0.5px";
+                })
+            }
+            
+        }
+        createGrid(16);
+
+        document.getElementById("newGridButton").addEventListener("click", function(e){
+            document.getElementById("inputContainer").style.display = "flex";
+            document.getElementById("colorInputContainer").style.display = "flex";
+            document.getElementById("opacityContainer").style.display = "flex";
+            document.getElementById("randomizerContainer").style.display = "flex";
+            document.getElementById("buttonContainer").style.display = "none";
+        })
+
+        document.getElementById("squareInput").addEventListener("input", function(e) {
+            let squareN = document.getElementById("squareInput").value
+            let color = document.getElementById("colorInput").value
+            let opacity = document.getElementById("opacityInput").value
+            createGrid(squareN,color,opacity);
+        })
+        document.getElementById("colorInput").addEventListener("input", function(e) {
+            let squareN = document.getElementById("squareInput").value
+            let color = document.getElementById("colorInput").value
+            let opacity = document.getElementById("opacityInput").value
+            createGrid(squareN,color,opacity);
+        })
+        document.getElementById("opacityInput").addEventListener("input", function(e) {
+            let squareN = document.getElementById("squareInput").value
+            let color = document.getElementById("colorInput").value
+            let opacity = document.getElementById("opacityInput").value
+            createGrid(squareN,color,opacity);
+        })
+        document.getElementById("randomizerInput").addEventListener("input", function(e) {
+            let squareN = document.getElementById("squareInput").value
+            let color = document.getElementById("colorInput").value
+            let opacity = document.getElementById("opacityInput").value
+            
+            createGrid(squareN,color,opacity);
+        })
+    </script>
+</body>
+</html>
